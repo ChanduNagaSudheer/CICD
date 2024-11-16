@@ -17,7 +17,7 @@ public class MainView extends VerticalLayout {
     public MainView(){
         TextField email=new TextField("EMAIL");
         TextField git=new TextField("GIT-URL");
-        Button btn=new Button();
+        Button btn=new Button("SUBMIT");
         btn.addClickListener(click -> {
             try {
                 String scriptPath = "/home/codespace/Scripts_Storage/AutomationController.ctl";
