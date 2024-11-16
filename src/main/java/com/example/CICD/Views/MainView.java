@@ -7,6 +7,8 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -18,14 +20,28 @@ public class MainView extends VerticalLayout {
         Button btn=new Button();
         btn.addClickListener(click -> {
             try {
-            ProcessBuilder processBuilder = new ProcessBuilder("/home/codespace/Scripts_Storage/AutomationController.ctl");
-            processBuilder.directory(new java.io.File(System.getProperty("/home/codespace/Scripts_Storage"))); // Set working directory
+                String scriptPath = "/home/codespace/Scripts_Storage/AutomationController.ctl";
 
-            // Start the process
+                // Check if the script exists
+                File script = new File(scriptPath);
+                if (!script.exists() || !script.canExecute()) {
+                    throw new FileNotFoundException("Script not found or not executable: " + scriptPath);
+                }
+
+                // Execute the script
+                ProcessBuilder processBuilder = new ProcessBuilder(scriptPath);
+                processBuilder.directory(script.getParentFile()); // Set working directory
+                processBuilder.redirectErrorStream(true);
 
                 Process process = processBuilder.start();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+                // Read the script output
+
+                // Wait for script execution to complete
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         add(new VerticalLayout(email,git,btn));
